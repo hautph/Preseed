@@ -1,0 +1,28 @@
+d-i keyboard-configuration/xkb-keymap select us
+d-i netcfg/choose_interface select auto
+d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/get_domain string unassigned-domain
+d-i netcfg/wireless_wep string
+d-i hw-detect/load_firmware boolean false
+d-i passwd/make-user boolean false
+d-i clock-setup/utc boolean true
+d-i clock-setup/ntp boolean true
+tasksel tasksel/first multiselect none
+apt-cdrom-setup	apt-setup/cdrom/set-first boolean false
+apt-mirror-setup apt-setup/use_mirror boolean false
+apt-mirror-setup apt-setup/no_mirror boolean true
+d-i apt-setup/main boolean true
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
+d-i apt-setup/security-updates boolean false
+d-i mirror/http/hostname string httpredir.debian.org
+d-i mirror/http/directory string /debian
+d-i mirror/country string ""
+popularity-contest popularity-contest/participate boolean false
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean false
+d-i grub-installer/bootdev  string default
+d-i finish-install/reboot_in_progress note
+d-i preseed/late_command string in-target wget -O /tmp/post-install http://downloads.3cx.com/downloads/debian9iso/post-install_9.4.0b.txt; in-target chmod +x /tmp/post-install; in-target /bin/bash /tmp/post-install
+iptables-persistent iptables-persistent/autosave_v6 boolean true
+iptables-persistent iptables-persistent/autosave_v4 boolean true
