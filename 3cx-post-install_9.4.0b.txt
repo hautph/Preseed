@@ -325,11 +325,8 @@ TTYVHangup=yes
 WantedBy=multi-user.target
 
 EOI
-
 apt-get install 3cxpbx
-
 apt-get install net-tools
-
 /usr/sbin/3CXLaunchWebConfigTool
 chmod a+x $post
 echo "#!/bin/sh" > /etc/rc.local
