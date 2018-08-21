@@ -327,7 +327,7 @@ WantedBy=multi-user.target
 EOI
 apt-get install 3cxpbx
 apt-get install net-tools
-/usr/sbin/3CXLaunchWebConfigTool
+apt-get upgrade
 chmod a+x $post
 echo "#!/bin/sh" > /etc/rc.local
 echo "clear; sleep 1" >> /etc/rc.local
