@@ -101,13 +101,28 @@ echo "50" | whiptail --title " 3CX Installation " --gauge "Install latest linux 
 /usr/bin/debconf-apt-progress -- apt-get -y install linux-image-amd64
 echo "60" | whiptail --title " 3CX Installation " --gauge "Install 3CX package" 7 78 0; sleep 1
 
-echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
+ask_for_channel()
+{
+echo "3CX Stable" > /tmp/results
+}
+ask_for_channel
+
+CHANNEL_RESULT=`cat /tmp/results`
+
+case "${CHANNEL_RESULT}" in
+"3CX Stable") echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
 iptables-restore < /etc/iptables/rules.v4  >> /tmp/installation_log.txt 2>&1
 systemctl enable netfilter-persistent.service >> /tmp/installation_log.txt 2>&1
 echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y install 3cxpbx
 /bin/ln -s /etc/systemd/system/3CXFirstInstallation.service /etc/systemd/system/multi-user.target.wants/3CXFirstInstallation.service
 ;;
-
+"3CX Beta") echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
+iptables-restore < /etc/iptables/rules.v4  >> /tmp/installation_log.txt 2>&1
+systemctl enable netfilter-persistent.service >> /tmp/installation_log.txt 2>&1
+echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install 3cxpbx
+/bin/ln -s /etc/systemd/system/3CXFirstInstallation.service /etc/systemd/system/multi-user.target.wants/3CXFirstInstallation.service
+;;
+"3CX SBC") rm -f /etc/iptables/rules.v4 2> /dev/null > /dev/null
 rm -f /etc/iptables/rules.v6 2> /dev/null > /dev/null
 echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install curl
 echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install 3cxsbc
@@ -310,8 +325,11 @@ TTYVHangup=yes
 WantedBy=multi-user.target
 
 EOI
+
 apt-get install 3cxpbx
+
 apt-get install net-tools
+
 /usr/sbin/3CXLaunchWebConfigTool
 chmod a+x $post
 echo "#!/bin/sh" > /etc/rc.local
@@ -320,4 +338,3 @@ echo "if [ -x "$post" ]; then /bin/openvt -c 10 -s $post; fi" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 chmod +x /etc/rc.local
 mkdir -p /etc/3cxpbx/
-
