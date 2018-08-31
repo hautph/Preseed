@@ -332,7 +332,7 @@ WantedBy=multi-user.target
 EOI
 apt-get update
 apt-get upgrade
-apt-get install net-tools
+apt-get -y install net-tools
 apt-get -y install nginx
 apt-get -y install 3cxpbx
 mkdir -p /etc/3cxpbx
