@@ -325,7 +325,7 @@ TTYVHangup=yes
 WantedBy=multi-user.target
 
 EOI
-apt-get install 3cxpbx
+#apt-get install 3cxpbx
 apt-get install net-tools
 apt-get upgrade
 chmod a+x $post
