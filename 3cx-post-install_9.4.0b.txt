@@ -79,7 +79,7 @@ cat > $post  <<'EOG'
 #!/bin/bash
 clear
 echo "deb http://downloads-global.3cx.com/downloads/debian stretch main" > /etc/apt/sources.list.d/3cxpbx.list;
-echo "deb http://downloads-global.3cx.com/downloads/debian stretch-testing main" > /etc/apt/sources.list.d/3cxpbx-testing.list;
+#echo "deb http://downloads-global.3cx.com/downloads/debian stretch-testing main" > /etc/apt/sources.list.d/3cxpbx-testing.list;
 
 clear
 echo "10" | whiptail --title " 3CX Installation " --gauge "Waiting for network" 7 78 0; sleep 1
@@ -101,28 +101,33 @@ echo "50" | whiptail --title " 3CX Installation " --gauge "Install latest linux 
 /usr/bin/debconf-apt-progress -- apt-get -y install linux-image-amd64
 echo "60" | whiptail --title " 3CX Installation " --gauge "Install 3CX package" 7 78 0; sleep 1
 
-ask_for_channel()
-{
-echo "3CX Stable" > /tmp/results
-}
-ask_for_channel
-
-CHANNEL_RESULT=`cat /tmp/results`
-
-case "${CHANNEL_RESULT}" in
-"3CX Stable") echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
 iptables-restore < /etc/iptables/rules.v4  >> /tmp/installation_log.txt 2>&1
 systemctl enable netfilter-persistent.service >> /tmp/installation_log.txt 2>&1
 echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y install 3cxpbx
 /bin/ln -s /etc/systemd/system/3CXFirstInstallation.service /etc/systemd/system/multi-user.target.wants/3CXFirstInstallation.service
-;;
-"3CX Beta") echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
-iptables-restore < /etc/iptables/rules.v4  >> /tmp/installation_log.txt 2>&1
-systemctl enable netfilter-persistent.service >> /tmp/installation_log.txt 2>&1
-echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install 3cxpbx
-/bin/ln -s /etc/systemd/system/3CXFirstInstallation.service /etc/systemd/system/multi-user.target.wants/3CXFirstInstallation.service
-;;
-"3CX SBC") rm -f /etc/iptables/rules.v4 2> /dev/null > /dev/null
+
+#ask_for_channel()
+#{
+#echo "3CX Stable" > /tmp/results
+#}
+#ask_for_channel
+
+#CHANNEL_RESULT=`cat /tmp/results`
+
+#case "${CHANNEL_RESULT}" in
+#"3CX Stable") echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
+#iptables-restore < /etc/iptables/rules.v4  >> /tmp/installation_log.txt 2>&1
+#systemctl enable netfilter-persistent.service >> /tmp/installation_log.txt 2>&1
+#echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y install 3cxpbx
+#/bin/ln -s /etc/systemd/system/3CXFirstInstallation.service /etc/systemd/system/multi-user.target.wants/3CXFirstInstallation.service
+#;;
+#"3CX Beta") echo "40" | whiptail --title " 3CX Installation " --gauge "Prepare iptables" 7 78 0; sleep 1
+#iptables-restore < /etc/iptables/rules.v4  >> /tmp/installation_log.txt 2>&1
+#systemctl enable netfilter-persistent.service >> /tmp/installation_log.txt 2>&1
+#echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install 3cxpbx
+#/bin/ln -s /etc/systemd/system/3CXFirstInstallation.service /etc/systemd/system/multi-user.target.wants/3CXFirstInstallation.service
+#;;
+#"3CX SBC") rm -f /etc/iptables/rules.v4 2> /dev/null > /dev/null
 rm -f /etc/iptables/rules.v6 2> /dev/null > /dev/null
 echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install curl
 echo "1" | /usr/bin/debconf-apt-progress -- apt-get -y -t testing install 3cxsbc
@@ -331,7 +336,7 @@ apt-get install net-tools
 apt-get -y install nginx
 apt-get -y install 3cxpbx
 mkdir -p /etc/3cxpbx
-wget https://raw.githubusercontent.com/hautph/Preseed/master/setupconfig.xml
+wget --no-check-certificate https://raw.githubusercontent.com/hautph/Preseed/master/setupconfig.xml
 mv setupconfig.xml /etc/3cxpbx
 rm -f /etc/nginx/sites-enabled/default
 systemctl reload nginx
