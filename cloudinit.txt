@@ -715,4 +715,5 @@ apt-get update
 apt-get -y install nginx
 rm -f /etc/nginx/sites-enabled/default
 systemctl reload nginx
+apt-get -y install net-tools
 apt-get -y install 3cxpbx
