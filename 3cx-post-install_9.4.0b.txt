@@ -329,9 +329,12 @@ apt-get update
 apt-get upgrade
 apt-get install net-tools
 apt-get -y install nginx
+apt-get -y install 3cxpbx
+mkdir -p /etc/3cxpbx
+wget https://raw.githubusercontent.com/hautph/Preseed/master/setupconfig.xml
+mv setupconfig.xml /etc/3cxpbx
 rm -f /etc/nginx/sites-enabled/default
 systemctl reload nginx
-apt-get -y install 3cxpbx
 chmod a+x $post
 echo "#!/bin/sh" > /etc/rc.local
 echo "clear; sleep 1" >> /etc/rc.local
