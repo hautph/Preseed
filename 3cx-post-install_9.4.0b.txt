@@ -330,11 +330,12 @@ TTYVHangup=yes
 WantedBy=multi-user.target
 
 EOI
-apt-get update --fix-missing
-apt-get upgrade --fix-missing
-apt-get -y install net-tools --fix-missing
-apt-get -y install nginx --fix-missing
-apt-get -y install 3cxpbx --fix-missing
+sudo sed -i 's/http:\/\/lt\./http:\/\//g' /etc/apt/sources.list
+apt-get update
+apt-get upgrade
+apt-get -y install net-tools
+apt-get -y install nginx
+apt-get -y install 3cxpbx
 mkdir -p /etc/3cxpbx
 wget --no-check-certificate https://raw.githubusercontent.com/hautph/Preseed/master/setupconfig.xml
 mv setupconfig.xml /etc/3cxpbx
