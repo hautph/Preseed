@@ -1,0 +1,14 @@
+#!/bin/bash -e
+mkdir -p /etc/3cxpbx
+cat > /etc/3cxpbx/setupconfig.xml << "<EOF>"
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfSerializedQuestion xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <!--PUT CONTENTS OF SETUPCONFIG.XML HERE--> 
+<EOF>
+wget -O- http://downloads.3cx.com/downloads/3cxpbx/public.key | apt-key add -
+echo "deb http://downloads.3cx.com/downloads/3cxpbx/ /" > /etc/apt/sources.list.d/3cxpbx.list
+apt-get update
+apt-get -y install nginx
+rm -f /etc/nginx/sites-enabled/default
+systemctl reload nginx
+apt-get -y install 3cxpbx
