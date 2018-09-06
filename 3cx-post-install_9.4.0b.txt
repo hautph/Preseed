@@ -331,6 +331,10 @@ WantedBy=multi-user.target
 
 EOI
 sudo sed -i 's/http:\/\/lt\./http:\/\//g' /etc/apt/sources.list
+#wget -O- http://downloads.3cx.com/downloads/3cxpbx/public.key | apt-key add -
+#echo "deb http://downloads.3cx.com/downloads/3cxpbx/ /" | tee /etc/apt/sources.list.d/3cxpbx.list
+#apt-get update
+#apt-get install 3cxpbx
 apt-get update
 apt-get upgrade
 apt-get -y install net-tools
